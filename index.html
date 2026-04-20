@@ -1064,7 +1064,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
   <div id="admin-lock" style="text-align:center;padding:2rem 1rem">
     <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px">Enter admin password</div>
     <div style="display:flex;gap:8px;justify-content:center;max-width:320px;margin:0 auto">
-      <input id="admin-pw" type="password" placeholder="Admin password" style="flex:1;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff)" onkeydown="if(event.key==='Enter')ADMIN.unlock()">
+      <input id="admin-pass-input" type="password" placeholder="Admin password" style="flex:1;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff)" onkeydown="if(event.key==='Enter')ADMIN.unlock()">
       <button class="btn btn-p" onclick="ADMIN.unlock()">Unlock</button>
     </div>
     <div id="admin-pw-error" style="display:none;color:var(--danger);font-size:12px;margin-top:8px;font-weight:600">Incorrect password</div>
