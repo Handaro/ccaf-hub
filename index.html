@@ -1121,6 +1121,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
         <button onclick="ADMIN.load()" class="btn btn-sm">&#8635; Refresh</button>
       </div>
     </div>
+    <div id="admin-users-section" style="margin-bottom:14px"></div>
     <div id="admin-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px"></div>
     <div style="overflow-x:auto">
       <table style="width:100%;border-collapse:collapse;font-size:12px" id="admin-table">
@@ -3911,6 +3912,7 @@ async function saveResultToMongo(score,total,scaled,domains){
 const SESSION = {
   eid: localStorage.getItem('ccaf_eid') || null,
   nickname: localStorage.getItem('ccaf_nickname') || null,
+  status: 'approved',
   isAdmin: false,
 };
 
@@ -3920,9 +3922,13 @@ const SESSION = {
 const REG = {
   init() {
     if (!SESSION.eid || !SESSION.nickname) {
+      // First time — show registration overlay
       document.getElementById('reg-overlay').style.display = 'flex';
     } else {
+      // Returning user — skip overlay, go straight in
+      // Do a silent background check for role/status
       REG.onReady();
+      REG.checkRole();
     }
   },
   async submit() {
@@ -3940,12 +3946,18 @@ const REG = {
       });
       const data = await res.json();
       if (data.user || data.registered !== undefined) {
+        const user = data.user;
         SESSION.eid = eid;
-        SESSION.nickname = data.user ? data.user.nickname : nick;
+        SESSION.nickname = user ? user.nickname : nick;
+        SESSION.status = user ? user.status : 'pending';
         localStorage.setItem('ccaf_eid', SESSION.eid);
         localStorage.setItem('ccaf_nickname', SESSION.nickname);
         document.getElementById('reg-overlay').style.display = 'none';
-        REG.onReady();
+        if (SESSION.status === 'pending') {
+          REG.showPending();
+        } else {
+          REG.onReady();
+        }
       } else {
         err.style.display='block'; err.textContent='Registration failed. Please try again.';
       }
@@ -3961,9 +3973,9 @@ const REG = {
   reset() {
     localStorage.removeItem('ccaf_eid');
     localStorage.removeItem('ccaf_nickname');
-    SESSION.eid = null; SESSION.nickname = null; SESSION.isAdmin = false;
-    document.getElementById('reg-overlay').style.display = 'flex';
-    document.getElementById('tab-admin-btn').style.display = 'none';
+    localStorage.removeItem('ccaf_approved');
+    SESSION.eid = null; SESSION.nickname = null; SESSION.isAdmin = false; SESSION.status = null;
+    location.reload();
   },
   onReady() {
     // Update welcome message on home tab
@@ -3977,19 +3989,43 @@ const REG = {
     try {
       const res = await fetch(API_BASE+'/api/users?eid='+encodeURIComponent(SESSION.eid));
       const data = await res.json();
-      if (data.user && data.user.role === 'admin') {
-        SESSION.isAdmin = true;
-        const adminBtn = document.getElementById('tab-admin-btn');
-        if (adminBtn) adminBtn.style.display = 'flex';
+      if (data.user) {
+        SESSION.status = data.user.status || 'approved';
+        // Only show pending screen if this is a fresh registration
+        // On refresh, silently update status but don't interrupt
+        if (SESSION.status === 'pending' && !localStorage.getItem('ccaf_approved')) {
+          REG.showPending();
+          return;
+        } else if (SESSION.status === 'approved') {
+          localStorage.setItem('ccaf_approved', '1');
+        }
+        // Check if admin
+        if (data.user.role === 'admin') {
+          SESSION.isAdmin = true;
+          const adminBtn = document.getElementById('tab-admin-btn');
+          if (adminBtn) adminBtn.style.display = 'flex';
+        }
       }
     } catch(e) {
-      // If API fails, check locally — if EID matches hardcoded admin
       if (SESSION.eid === 'alejandro.parpan') {
         SESSION.isAdmin = true;
         const adminBtn = document.getElementById('tab-admin-btn');
         if (adminBtn) adminBtn.style.display = 'flex';
       }
     }
+  },
+  showPending() {
+    // Show pending approval screen
+    const overlay = document.getElementById('reg-overlay');
+    overlay.style.display = 'flex';
+    overlay.innerHTML = '<div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center">'
+      + '<svg width="52" height="52" viewBox="0 0 48 48" fill="none" style="margin:0 auto 12px;display:block"><rect width="48" height="48" rx="12" fill="#3D6B20"/><text x="24" y="32" text-anchor="middle" font-family="serif" font-size="22" font-weight="600" fill="white">CCA</text></svg>'
+      + '<div style="font-family:var(--ffd);font-size:20px;color:var(--g1);margin-bottom:8px">Access Pending</div>'
+      + '<div style="font-size:13px;color:var(--ink4);margin-bottom:16px;line-height:1.6">Your account is awaiting admin approval.<br>Please contact your administrator.</div>'
+      + '<div style="background:var(--warn-bg);border-radius:var(--r2);padding:12px;font-size:12px;color:var(--warn);margin-bottom:16px">'
+      + '<b>EID:</b> ' + SESSION.eid + '<br><b>Status:</b> Pending approval</div>'
+      + '<button onclick="REG.reset()" style="background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);padding:10px 20px;font-size:12px;cursor:pointer;font-family:var(--ff);color:var(--ink3)">Use a different EID</button>'
+      + '</div>';
   }
 };
 
@@ -4078,17 +4114,72 @@ const ADMIN = {
     }
   },
 
+  allUsers: [],
+
   async load() {
     document.getElementById('admin-tbody').innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:var(--stone-m)">Loading...</td></tr>';
     try {
+      // Load results
       const res = await fetch(API_BASE+'/api/results?adminKey='+ADMIN_KEY);
       const data = await res.json();
       ADMIN.allResults = data.results || [];
+      // Load users
+      const res2 = await fetch(API_BASE+'/api/users?all=true&adminKey='+ADMIN_KEY);
+      const data2 = await res2.json();
+      ADMIN.allUsers = data2.users || [];
       ADMIN.renderStats();
+      ADMIN.renderPendingUsers();
       ADMIN.renderTable(ADMIN.allResults);
     } catch(e) {
       document.getElementById('admin-tbody').innerHTML = '<tr><td colspan="11" style="text-align:center;padding:2rem;color:var(--danger)">Failed to load results.</td></tr>';
     }
+  },
+
+  renderPendingUsers() {
+    const pending = ADMIN.allUsers.filter(u => u.status === 'pending');
+    const container = document.getElementById('admin-users-section');
+    if (!container) return;
+    if (!pending.length) {
+      container.innerHTML = '<div style="background:var(--success-bg);border-radius:var(--r2);padding:10px 14px;font-size:12px;color:var(--success);margin-bottom:14px">&#10003; No pending approvals</div>';
+      return;
+    }
+    let html = '<div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px">&#9201; Pending Approvals (' + pending.length + ')</div>';
+    pending.forEach(function(u) {
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;background:var(--warn-bg);border:1px solid var(--warm-l);border-radius:var(--r2);padding:10px 14px;margin-bottom:6px;gap:8px;flex-wrap:wrap">';
+      html += '<div><div style="font-size:12px;font-weight:700;color:var(--ink)">' + u.eid + '</div>';
+      html += '<div style="font-size:11px;color:var(--ink4)">' + u.nickname + ' &middot; ' + (u.registered_date||'').slice(0,10) + '</div></div>';
+      html += '<div style="display:flex;gap:6px">';
+      html += '<button data-eid="' + u.eid + '" onclick="ADMIN.approveUser(this)" style="background:var(--g3);color:#fff;border:none;border-radius:var(--r2);padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--ff)">&#10003; Approve</button>';
+      html += '<button data-eid="' + u.eid + '" onclick="ADMIN.rejectUser(this)" style="background:var(--danger-bg);color:var(--danger);border:1px solid #E0A0A0;border-radius:var(--r2);padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--ff)">&#10007; Reject</button>';
+      html += '</div></div>';
+    });
+    html += '<div style="margin-bottom:14px"></div>';
+    container.innerHTML = html;
+  },
+
+  async approveUser(btn) {
+    const eid = btn.getAttribute('data-eid');
+    try {
+      await fetch(API_BASE+'/api/users', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({eid, status:'approved', adminKey: ADMIN_KEY})
+      });
+      ADMIN.load();
+    } catch(e) { alert('Failed to approve user'); }
+  },
+
+  async rejectUser(btn) {
+    const eid = btn.getAttribute('data-eid');
+    if (!confirm('Reject and remove ' + eid + '?')) return;
+    try {
+      await fetch(API_BASE+'/api/users', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({eid, status:'rejected', adminKey: ADMIN_KEY})
+      });
+      ADMIN.load();
+    } catch(e) { alert('Failed to reject user'); }
   },
 
   renderStats() {
