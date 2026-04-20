@@ -296,33 +296,6 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
 <body>
 
 <!-- REGISTRATION OVERLAY -->
-<div id="reg-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem">
-  <div style="background:#fff;border-radius:16px;padding:28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="width:52px;height:52px;border-radius:12px;background:var(--g2);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <div style="font-family:var(--ffd);font-size:20px;color:var(--g1);margin-bottom:4px">Welcome to CCA-F Study Hub</div>
-      <div style="font-size:12px;color:var(--ink4);line-height:1.5">Enter your details to get started. Your exam results will be saved privately and game scores will appear on the leaderboard.</div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px">
-      <div>
-        <label style="font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Accenture Enterprise ID</label>
-        <input id="reg-eid" type="text" placeholder="e.g. alejandro.parpan" style="width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff);color:var(--ink);outline:none" onfocus="this.style.borderColor='var(--g4)'" onblur="this.style.borderColor='var(--bdr)'" onkeydown="if(event.key==='Enter')document.getElementById('reg-nick').focus()">
-      </div>
-      <div>
-        <label style="font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:5px">Display Nickname</label>
-        <input id="reg-nick" type="text" placeholder="e.g. Alejandro" style="width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff);color:var(--ink);outline:none" onfocus="this.style.borderColor='var(--g4)'" onblur="this.style.borderColor='var(--bdr)'" onkeydown="if(event.key==='Enter')REG.submit()">
-      </div>
-    </div>
-    <div id="reg-error" style="display:none;background:var(--danger-bg);color:var(--danger);font-size:12px;padding:8px 12px;border-radius:var(--r2);margin-bottom:12px;font-weight:600"></div>
-    <button onclick="REG.submit()" style="width:100%;padding:13px;background:var(--g3);color:#fff;border:none;border-radius:var(--r2);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--ff)" onmouseenter="this.style.background='var(--g2)'" onmouseleave="this.style.background='var(--g3)'">Enter the hub &rarr;</button>
-    <div style="font-size:11px;color:var(--stone-m);text-align:center;margin-top:10px">Your EID is saved on this device — you won&rsquo;t need to enter it again.</div>
-  </div>
-</div>
-
-
-<!-- REGISTRATION OVERLAY -->
 <div id="reg-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3)">
     <div style="text-align:center;margin-bottom:20px">
