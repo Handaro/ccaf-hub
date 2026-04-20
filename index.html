@@ -3421,7 +3421,7 @@ const QZ = (() => {
 
   // Init
   buildPool();
-  return {setDomain,render,next,prev,init:render};
+  return {setDomain,render,next,prev,init(){buildPool();render();}};
 })();
 
 // ================================================================
@@ -3752,7 +3752,7 @@ const EX = (() => {
       oe.appendChild(btn);
     });
     const expl=$id('ex-expl');
-    if(answers[i]!==null||submitted){expl.style.display='block';expl.innerHTML='<b>Explanation:</b> '+q.exp;}
+    if(submitted){expl.style.display='block';expl.innerHTML='<b>Explanation:</b> '+q.exp;}
     else expl.style.display='none';
     const fb=$id('ex-flag');
     if(fb){fb.style.background=flags[i]?'var(--warm-ll)':'#fff';fb.style.borderColor=flags[i]?'var(--warm-l)':'var(--bdr)';fb.style.color=flags[i]?'var(--warm)':'var(--ink4)';fb.textContent=flags[i]?'\u2691 Flagged for review':'\u2691 Flag for review';}
