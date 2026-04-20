@@ -354,8 +354,6 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
   <button class="tab" onclick="sw('exam',this)"><div class="tab-tip">Mock exam</div><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="10" cy="14" r="1.5"/><line x1="13" y1="14" x2="18" y2="14"/><circle cx="10" cy="18" r="1.5"/><line x1="13" y1="18" x2="18" y2="18"/></svg><span class="tab-label">EXAM</span></button>
   <button class="tab" onclick="sw('progress',this)"><div class="tab-tip">Progress</div><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><polyline points="2 20 22 20"/></svg><span class="tab-label">TRACK</span></button>
   <button class="tab" onclick="sw('quiz',this)"><div class="tab-tip">Quick quiz</div><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 2-2.5 2.5-2.5 4"/><circle cx="12" cy="16.5" r=".5" fill="currentColor"/></svg><span class="tab-label">QUIZ</span></button>
-  <button class="tab" onclick="sw('lb',this)"><div class="tab-tip">Leaderboard</div><svg viewBox="0 0 24 24"><path d="M8 6l4-4 4 4"/><path d="M12 2v10"/><path d="M3 18h18"/><path d="M5 18v-4a2 2 0 012-2h10a2 2 0 012 2v4"/></svg><span class="tab-label">BOARD</span></button>
-  <button class="tab" onclick="sw('admin',this)"><div class="tab-tip">Admin results</div><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span class="tab-label">ADMIN</span></button>
   <button class="tab" onclick="sw('game',this)"><div class="tab-tip">Match game</div><svg viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg><span class="tab-label">MATCH</span></button>
   <button class="tab" onclick="sw('board',this)"><div class="tab-tip">Leaderboard</div><svg viewBox="0 0 24 24"><polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/><polyline points="2 20 22 20"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="1" r="2"/></svg><span class="tab-label">BOARD</span></button>
   <button class="tab" id="tab-admin-btn" onclick="sw('admin',this)" style="display:none"><div class="tab-tip">Admin</div><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="tab-label">ADMIN</span></button>
@@ -365,7 +363,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
 <div id="tab-home" class="panel on">
   <div class="hero">
     <div class="hero-title">Welcome, Alejandro</div>
-    <div class="hero-sub">Your complete CCA-F preparation environment &middot; Accenture Edition</div>
+    <div class="hero-sub">Your complete CCA-F preparation environment &middot; Accenture Edition &nbsp;<span onclick="REG.reset()" style="cursor:pointer;opacity:.7;font-size:11px;text-decoration:underline">Not you? Change identity</span></div>
     <div class="hero-stats">
       <div class="hstat"><div class="hstat-n">5</div><div class="hstat-l">DOMAINS</div></div>
       <div class="hstat"><div class="hstat-n">6</div><div class="hstat-l">SCENARIOS</div></div>
@@ -1051,26 +1049,6 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
 
 
 <!-- LEADERBOARD TAB -->
-<div id="tab-lb" class="panel">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--bdr)">
-    <div style="width:40px;height:40px;border-radius:10px;background:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l4-4 4 4"/><path d="M12 2v10"/><path d="M3 18h18"/><path d="M5 18v-4a2 2 0 012-2h10a2 2 0 012 2v4"/></svg>
-    </div>
-    <div>
-      <div style="font-family:var(--ffd);font-size:18px;color:var(--g1)">Game Leaderboard</div>
-      <div style="font-size:11px;color:var(--ink4)">Top scores across all game modes &mdash; updated live</div>
-    </div>
-  </div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="lb-filter">
-    <button class="lbtn on" onclick="LB.load('all',this)">All games</button>
-    <button class="lbtn" onclick="LB.load('speed',this)">&#9889; Speed Round</button>
-    <button class="lbtn" onclick="LB.load('tf',this)">&#128293; True/False</button>
-    <button class="lbtn" onclick="LB.load('match',this)">&#127919; Term Match</button>
-  </div>
-  <div id="lb-content">
-    <div style="text-align:center;padding:2rem;color:var(--stone-m);font-size:13px">Loading leaderboard...</div>
-  </div>
-</div>
 
 <!-- ADMIN TAB -->
 <div id="tab-admin" class="panel">
@@ -3161,7 +3139,16 @@ const API_BASE = 'https://ccaf-api.vercel.app';
 const ADMIN_KEY = 'CcafAdmin2026';
 
 const SK='ccaf_v1';
-function sw(t,btn){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+t).classList.add('on');btn.classList.add('active');if(t==='progress')renderProgress();if(t==='quiz')QZ.init();}
+function sw(t,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('on');
+  btn.classList.add('active');
+  if(t==='progress')renderProgress();
+  if(t==='quiz')QZ.init();
+  if(t==='board')LB.load();
+  if(t==='admin'&&!SESSION.isAdmin){document.getElementById('admin-lock').style.display='block';document.getElementById('admin-content').style.display='none';}
+}
 function showD(id,btn){document.querySelectorAll('.dsec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('on'));document.getElementById('dsec-'+id).classList.add('on');btn.classList.add('on');}
 
 const ATEXTS={
@@ -3915,20 +3902,9 @@ async function saveResultToMongo(score,total,scaled,domains){
 // ================================================================
 // PATCH sw() to load leaderboard when switching to lb tab
 // ================================================================
-const _origSw=sw;
-function sw(t,btn){
-  _origSw(t,btn);
-  if(t==='lb')LB.load('all');
-}
-
 // ================================================================
 // INIT ON LOAD
 // ================================================================
-window.addEventListener('DOMContentLoaded',()=>{
-  REG.init();
-});
-
-
 // ================================================================
 // USER SESSION
 // ================================================================
@@ -3981,6 +3957,13 @@ const REG = {
       document.getElementById('reg-overlay').style.display = 'none';
       REG.onReady();
     }
+  },
+  reset() {
+    localStorage.removeItem('ccaf_eid');
+    localStorage.removeItem('ccaf_nickname');
+    SESSION.eid = null; SESSION.nickname = null; SESSION.isAdmin = false;
+    document.getElementById('reg-overlay').style.display = 'flex';
+    document.getElementById('tab-admin-btn').style.display = 'none';
   },
   onReady() {
     // Update welcome message on home tab
@@ -4156,15 +4139,6 @@ const ADMIN = {
 // ================================================================
 // PATCH sw() to load leaderboard on tab open + show admin tab for admin
 // ================================================================
-const _sw_orig = sw;
-function sw(t, btn) {
-  _sw_orig(t, btn);
-  if (t === 'board') LB.load();
-  if (t === 'admin' && !SESSION.isAdmin) {
-    document.getElementById('admin-lock').style.display = 'block';
-    document.getElementById('admin-content').style.display = 'none';
-  }
-}
 
 // ================================================================
 // PATCH exam buildResults to save to MongoDB
