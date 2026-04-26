@@ -310,12 +310,16 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
     <div style="display:flex;flex-direction:column;gap:12px">
       <div>
         <label style="font-size:12px;font-weight:700;color:var(--ink);display:block;margin-bottom:5px">Accenture Enterprise ID</label>
-        <input id="reg-eid" type="text" placeholder="e.g. alejandro.parpan" style="width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff);color:var(--ink);outline:none" onfocus="this.style.borderColor='var(--g4)'" onblur="this.style.borderColor='var(--bdr)'">
+        <input id="reg-eid" type="text" placeholder="e.g. alejandro.parpan" style="width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff);color:var(--ink);outline:none" onfocus="this.style.borderColor='var(--g4)'" onblur="this.style.borderColor='var(--bdr)'" onkeydown="if(event.key==='Enter')REG.submit()">
       </div>
       <div>
         <label style="font-size:12px;font-weight:700;color:var(--ink);display:block;margin-bottom:5px">Nickname (shown on leaderboard)</label>
-        <input id="reg-nick" type="text" placeholder="e.g. Alejandro" style="width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff);color:var(--ink);outline:none" onfocus="this.style.borderColor='var(--g4)'" onblur="this.style.borderColor='var(--bdr)'">
+        <input id="reg-nick" type="text" placeholder="e.g. Alejandro" style="width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff);color:var(--ink);outline:none" onfocus="this.style.borderColor='var(--g4)'" onblur="this.style.borderColor='var(--bdr)'" onkeydown="if(event.key==='Enter')REG.submit()">
       </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;margin-top:2px">
+        <input type="checkbox" id="reg-remember" checked style="width:15px;height:15px;accent-color:var(--g3);cursor:pointer">
+        <span style="font-size:12px;color:var(--ink3);font-weight:600">Remember me</span>
+      </label>
       <div id="reg-error" style="display:none;background:var(--danger-bg);border-radius:var(--r2);padding:8px 12px;font-size:12px;color:var(--danger)"></div>
       <button onclick="REG.submit()" style="background:var(--g3);color:#fff;border:none;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--ff);margin-top:4px">Get started &rarr;</button>
     </div>
@@ -1049,37 +1053,6 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
 
 
 <!-- LEADERBOARD TAB -->
-
-<!-- ADMIN TAB -->
-<div id="tab-admin" class="panel">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--bdr)">
-    <div style="width:40px;height:40px;border-radius:10px;background:var(--bulb);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    </div>
-    <div>
-      <div style="font-family:var(--ffd);font-size:18px;color:var(--g1)">Admin &mdash; Exam Results</div>
-      <div style="font-size:11px;color:var(--ink4)">Private view &mdash; password protected</div>
-    </div>
-  </div>
-  <div id="admin-lock" style="text-align:center;padding:2rem 1rem">
-    <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px">Enter admin password</div>
-    <div style="display:flex;gap:8px;justify-content:center;max-width:320px;margin:0 auto">
-      <input id="admin-pass-input" type="password" placeholder="Admin password" style="flex:1;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff)" onkeydown="if(event.key==='Enter')ADMIN.unlock()">
-      <button class="btn btn-p" onclick="ADMIN.unlock()">Unlock</button>
-    </div>
-    <div id="admin-pw-error" style="display:none;color:var(--danger);font-size:12px;margin-top:8px;font-weight:600">Incorrect password</div>
-  </div>
-  <div id="admin-content" style="display:none">
-    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
-      <button class="btn btn-p btn-sm" onclick="ADMIN.load()">Refresh</button>
-      <input id="admin-eid-filter" type="text" placeholder="Filter by EID..." style="padding:6px 12px;border:1px solid var(--bdr);border-radius:var(--r2);font-size:12px;font-family:var(--ff)" oninput="ADMIN.filter(this.value)">
-    </div>
-    <div id="admin-table"></div>
-  </div>
-</div>
-
-
-<!-- LEADERBOARD TAB -->
 <div id="tab-board" class="panel">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
     <div>
@@ -1103,26 +1076,26 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
 
 <!-- ADMIN TAB -->
 <div id="tab-admin" class="panel">
-  <div id="admin-lock">
-    <div style="max-width:360px;margin:0 auto;padding:2rem 0;text-align:center">
-      <div style="font-size:36px;margin-bottom:12px">&#128274;</div>
-      <div style="font-family:var(--ffd);font-size:18px;color:var(--g1);margin-bottom:6px">Admin access</div>
-      <div style="font-size:12px;color:var(--ink4);margin-bottom:16px">Enter the admin password to view all exam results</div>
-      <input id="admin-pass-input" type="password" placeholder="Admin password" style="width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;font-family:var(--ff);margin-bottom:10px;outline:none" onfocus="this.style.borderColor='var(--g4)'" onblur="this.style.borderColor='var(--bdr)'">
-      <button onclick="ADMIN.unlock()" style="width:100%;background:var(--g3);color:#fff;border:none;border-radius:var(--r2);padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--ff)">Unlock</button>
-      <div id="admin-lock-error" style="display:none;color:var(--danger);font-size:12px;margin-top:8px"></div>
-    </div>
-  </div>
-  <div id="admin-content" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
-      <div style="font-family:var(--ffd);font-size:18px;color:var(--g1)">&#128737; Admin &mdash; Exam Results</div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <input id="admin-search" type="text" placeholder="Search by EID..." style="padding:7px 12px;border:1px solid var(--bdr);border-radius:var(--r2);font-size:12px;font-family:var(--ff);outline:none" oninput="ADMIN.search(this.value)">
-        <button onclick="ADMIN.load()" class="btn btn-sm">&#8635; Refresh</button>
+  <div id="admin-content">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:2px solid var(--bdr)">
+      <div>
+        <div style="font-family:var(--ffd);font-size:20px;color:var(--g1)">&#128737; Admin Panel</div>
+        <div style="font-size:12px;color:var(--ink4);margin-top:2px">Login requests &nbsp;·&nbsp; Registered users &nbsp;·&nbsp; Exam results</div>
       </div>
+      <button onclick="ADMIN.load()" class="btn btn-sm">&#8635; Refresh</button>
     </div>
-    <div id="admin-users-section" style="margin-bottom:14px"></div>
-    <div id="admin-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px"></div>
+
+    <!-- Section 1: Login requests + registered users (rendered by renderPendingUsers) -->
+    <div id="admin-users-section" style="margin-bottom:20px"></div>
+
+    <!-- Section 2: Exam results -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+      <div style="font-size:14px;font-weight:700;color:var(--ink)">&#128203; Exam Results</div>
+      <input id="admin-search" type="text" placeholder="Search by EID or nickname..." style="padding:7px 12px;border:1px solid var(--bdr);border-radius:var(--r2);font-size:12px;font-family:var(--ff);outline:none;min-width:220px" oninput="ADMIN.search(this.value)">
+    </div>
+    <div id="admin-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px"></div>
     <div style="overflow-x:auto">
       <table style="width:100%;border-collapse:collapse;font-size:12px" id="admin-table">
         <thead>
@@ -1142,6 +1115,23 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
         </thead>
         <tbody id="admin-tbody"></tbody>
       </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- PENDING GATE (shown instead of restricted tabs for pending users) -->
+<div id="tab-pending-gate" class="panel">
+  <div style="max-width:480px;margin:4rem auto;text-align:center;padding:0 1rem">
+    <div style="font-size:48px;margin-bottom:16px">⏳</div>
+    <div style="font-family:var(--ffd);font-size:22px;color:var(--g1);margin-bottom:8px">Waiting for Approval</div>
+    <div style="font-size:13px;color:var(--ink4);line-height:1.7;margin-bottom:20px">Your account is registered but hasn't been approved yet.<br>The <b>Exam</b>, <b>Quiz</b>, and <b>Games</b> sections are locked until you're approved.</div>
+    <div style="background:var(--warn-bg);border:1px solid var(--warm-l);border-radius:var(--r3);padding:16px 20px;margin-bottom:20px;text-align:left">
+      <div style="font-size:12px;font-weight:700;color:var(--warm);margin-bottom:6px">📣 What to do next</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.7">Message <b>Alejandro Parpan</b> on <b>Microsoft Teams</b> to request approval for your account.<br>Include your <b>EID</b> and <b>nickname</b> so it can be verified quickly.</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--bdr2);border-radius:var(--r2);padding:10px 16px;font-size:12px;color:var(--ink3);display:inline-block">
+      <b>EID:</b> <span id="pg-eid">—</span> &nbsp;·&nbsp; <b>Nickname:</b> <span id="pg-nick">—</span>
     </div>
   </div>
 </div>
@@ -2660,14 +2650,26 @@ const ADMIN_KEY = 'CcafAdmin2026';
 
 const SK='ccaf_v1';
 function sw(t,btn){
+  // Admin tab: strictly only for alejandro.parpan/drw — silently ignore for everyone else
+  if(t==='admin'&&!SESSION.isAdmin) return;
+  // Restricted tabs: blocked for pending users
+  const RESTRICTED=['exam','quiz','game'];
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+t).classList.add('on');
   btn.classList.add('active');
+  if(RESTRICTED.includes(t)&&SESSION.status==='pending'){
+    document.getElementById('tab-pending-gate').classList.add('on');
+    const pgEid=document.getElementById('pg-eid');
+    const pgNick=document.getElementById('pg-nick');
+    if(pgEid)pgEid.textContent=SESSION.eid||'—';
+    if(pgNick)pgNick.textContent=SESSION.nickname||'—';
+    return;
+  }
+  document.getElementById('tab-'+t).classList.add('on');
   if(t==='progress')renderProgress();
   if(t==='quiz')QZ.init();
   if(t==='board')LB.load();
-  if(t==='admin'&&!SESSION.isAdmin){document.getElementById('admin-lock').style.display='block';document.getElementById('admin-content').style.display='none';}
+  if(t==='admin')ADMIN.load();
 }
 function showD(id,btn){document.querySelectorAll('.dsec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('on'));document.getElementById('dsec-'+id).classList.add('on');btn.classList.add('on');}
 
@@ -2684,6 +2686,12 @@ function toggleAudio(id){
   if(!('speechSynthesis' in window)){alert('Speech synthesis not supported. Try Chrome or Edge.');return;}
   if(!aSt[id])aSt[id]={};
   aSt[id].on=true;aSt[id].start=Date.now();
+  // Pre-cache word spans and cumulative char positions once per audio start
+  const _txEl=document.getElementById('tx-'+id);
+  if(_txEl){aSt[id].words=[..._txEl.querySelectorAll('.ap-word')];}
+  const _ws=ATEXTS[id].split(' ');let _cp=0;
+  aSt[id].wpos=_ws.map(w=>{const s=_cp;_cp+=w.length+1;return s;});
+  aSt[id].hiIdx=undefined;
   const spd=parseFloat(document.getElementById('spd-'+id).value);
   const dur={d1:190,d2:140,d3:150,d4:120,d5:120}[id]||120;
   aSt[id].dur=dur;setBtnPause(id);
@@ -2702,9 +2710,22 @@ function toggleAudio(id){
   },300);
 }
 function fmt(s){const m=Math.floor(s/60);const sc=Math.floor(s%60);return m+':'+(sc<10?'0':'')+sc;}
-function getWI(id,ci){const ws=ATEXTS[id].split(' ');let w=0,c2=0;while(c2<ci&&w<ws.length){c2+=ws[w].length+1;w++;}return Math.max(0,w-1);}
-function hiWord(id,idx){const el=document.getElementById('tx-'+id);if(!el)return;el.querySelectorAll('.ap-word').forEach((s,i)=>s.classList.toggle('hi',i===idx));}
-function resetWords(id){const el=document.getElementById('tx-'+id);if(!el)return;el.querySelectorAll('.ap-word').forEach(s=>s.classList.remove('hi'));}
+function getWI(id,ci){
+  const st=aSt[id];
+  if(st&&st.wpos){const p=st.wpos;let lo=0,hi=p.length-1;while(lo<hi){const m=(lo+hi+1)>>1;if(p[m]<=ci)lo=m;else hi=m-1;}return lo;}
+  const ws=ATEXTS[id].split(' ');let w=0,c2=0;while(c2<ci&&w<ws.length){c2+=ws[w].length+1;w++;}return Math.max(0,w-1);
+}
+function hiWord(id,idx){
+  const st=aSt[id];if(!st||!st.words)return;
+  if(st.hiIdx!==undefined&&st.words[st.hiIdx])st.words[st.hiIdx].classList.remove('hi');
+  if(st.words[idx])st.words[idx].classList.add('hi');
+  st.hiIdx=idx;
+}
+function resetWords(id){
+  const st=aSt[id];
+  if(st&&st.words&&st.hiIdx!==undefined){if(st.words[st.hiIdx])st.words[st.hiIdx].classList.remove('hi');st.hiIdx=undefined;return;}
+  const el=document.getElementById('tx-'+id);if(el)el.querySelectorAll('.ap-word').forEach(s=>s.classList.remove('hi'));
+}
 function setBtnPlay(id){const b=document.getElementById('btn-'+id);b.classList.remove('playing');b.innerHTML='<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="var(--ink3)" stroke="none"/></svg>';}
 function setBtnPause(id){const b=document.getElementById('btn-'+id);b.classList.add('playing');b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>';}
 function setSpd(id){if(aSt[id]&&aSt[id].on){speechSynthesis.cancel();aSt[id].on=false;clearInterval(aSt[id].tmr);setBtnPlay(id);document.getElementById('prog-'+id).style.width='0%';document.getElementById('cur-'+id).textContent='0:00';resetWords(id);}}
@@ -3429,11 +3450,13 @@ async function saveResultToMongo(score,total,scaled,domains){
 // USER SESSION
 // ================================================================
 const SESSION = {
-  eid: localStorage.getItem('ccaf_eid') || null,
-  nickname: localStorage.getItem('ccaf_nickname') || null,
+  eid: localStorage.getItem('ccaf_eid') || sessionStorage.getItem('ccaf_eid') || null,
+  nickname: localStorage.getItem('ccaf_nickname') || sessionStorage.getItem('ccaf_nickname') || null,
   status: 'approved',
   isAdmin: false,
 };
+// Resolve admin synchronously — no async needed, no race condition
+SESSION.isAdmin = SESSION.eid === 'alejandro.parpan' && (SESSION.nickname||'').toLowerCase() === 'drw';
 
 // ================================================================
 // REGISTRATION
@@ -3441,60 +3464,101 @@ const SESSION = {
 const REG = {
   init() {
     if (!SESSION.eid || !SESSION.nickname) {
-      // First time — show registration overlay
       document.getElementById('reg-overlay').style.display = 'flex';
-    } else {
-      // Returning user — skip overlay, go straight in
-      // Do a silent background check for role/status
+    } else if (SESSION.eid === 'alejandro.parpan') {
+      // Admin EID always gets full access — never show pending screen regardless of stored nickname
+      SESSION.status = 'approved';
       REG.onReady();
-      REG.checkRole();
+    } else {
+      REG.checkStatusAndProceed();
     }
+  },
+  async checkStatusAndProceed() {
+    try {
+      const res = await fetch(API_BASE+'/api/users?eid='+encodeURIComponent(SESSION.eid));
+      const data = await res.json();
+      if (data.user && data.user.status === 'pending') {
+        SESSION.status = 'pending';
+        REG.showPending();
+        return;
+      }
+    } catch(e) { /* API down — let them through */ }
+    SESSION.status = 'approved';
+    localStorage.setItem('ccaf_approved', '1');
+    REG.onReady();
   },
   async submit() {
     const eid = document.getElementById('reg-eid').value.trim().toLowerCase();
     const nick = document.getElementById('reg-nick').value.trim();
     const err = document.getElementById('reg-error');
-    if (!eid) { err.style.display='block'; err.textContent='Please enter your Enterprise ID.'; return; }
-    if (!nick) { err.style.display='block'; err.textContent='Please enter a nickname.'; return; }
-    if (eid.includes(' ')) { err.style.display='block'; err.textContent='Enterprise ID cannot contain spaces.'; return; }
-    err.style.display='none';
+    const btn = document.querySelector('#reg-overlay button[onclick="REG.submit()"]');
+
+    const showErr = (msg) => { err.style.display='block'; err.textContent=msg; if(btn){btn.disabled=false;btn.textContent='Get started →';} };
+
+    // Basic validation
+    if (!eid)           { showErr('Please enter your Enterprise ID.'); return; }
+    if (!nick)          { showErr('Please enter a nickname.'); return; }
+    if (eid.includes(' ')){ showErr('Enterprise ID cannot contain spaces.'); return; }
+
+    err.style.display = 'none';
+    if (btn) { btn.disabled=true; btn.textContent='Checking…'; }
+
     try {
-      const res = await fetch(API_BASE+'/api/users', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({eid, nickname: nick})
-      });
-      const data = await res.json();
-      if (data.user || data.registered !== undefined) {
-        const user = data.user;
-        // If EID already exists, check nickname matches
-        if (data.registered === false && user) {
-          const storedNick = user.nickname || '';
-          if (storedNick.toLowerCase() !== nick.toLowerCase()) {
-            err.style.display='block';
-            err.textContent='This EID is already registered with a different nickname. Please use: ' + storedNick;
-            return;
-          }
+      // Step 1 — check if this EID already exists
+      const lookupRes = await fetch(API_BASE + '/api/users?eid=' + encodeURIComponent(eid));
+      if (!lookupRes.ok) throw new Error('lookup_failed');
+      const lookupData = await lookupRes.json();
+
+      if (lookupData.user) {
+        // EID already registered — nickname MUST match exactly (case-insensitive)
+        const registeredNick = (lookupData.user.nickname || '').trim();
+        if (registeredNick.toLowerCase() !== nick.toLowerCase()) {
+          throw new Error('nickname_mismatch');
         }
-        SESSION.eid = eid;
-        SESSION.nickname = user ? user.nickname : nick;
-        SESSION.status = user ? user.status : 'pending';
-        localStorage.setItem('ccaf_eid', SESSION.eid);
-        localStorage.setItem('ccaf_nickname', SESSION.nickname);
-        document.getElementById('reg-overlay').style.display = 'none';
-        if (SESSION.status === 'pending') {
-          REG.showPending();
-        } else {
-          REG.onReady();
-        }
-      } else {
-        err.style.display='block'; err.textContent='Registration failed. Please try again.';
+        // Nickname matches — sign in as existing user
+        REG._finalise(eid, registeredNick, lookupData.user.status || 'approved');
+        return;
       }
+
+      // Step 2 — new EID: register it
+      const regRes = await fetch(API_BASE + '/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eid, nickname: nick })
+      });
+      if (!regRes.ok) throw new Error('register_failed');
+      const regData = await regRes.json();
+      const user = regData.user;
+      REG._finalise(eid, user ? user.nickname : nick, user ? (user.status || 'approved') : 'approved');
+
     } catch(e) {
-      // If API fails, still allow local use
-      SESSION.eid = eid; SESSION.nickname = nick;
-      localStorage.setItem('ccaf_eid', eid);
-      localStorage.setItem('ccaf_nickname', nick);
-      document.getElementById('reg-overlay').style.display = 'none';
+      if (e.message === 'nickname_mismatch') {
+        showErr('This Enterprise ID is already registered with a different nickname. Please contact Alejandro Parpan on Microsoft Teams to retrieve the nickname linked to your account.');
+      } else if (e.message === 'register_failed') {
+        showErr('Registration failed. Please try again.');
+      } else {
+        // Network or API unavailable — allow local use
+        REG._finalise(eid, nick, 'approved');
+      }
+    }
+  },
+
+  _finalise(eid, nickname, status) {
+    // Admin EID is always approved regardless of what the API says
+    if (eid === 'alejandro.parpan') status = 'approved';
+    SESSION.eid = eid;
+    SESSION.nickname = nickname;
+    SESSION.status = status;
+    const remember = document.getElementById('reg-remember') ? document.getElementById('reg-remember').checked : true;
+    const store = remember ? localStorage : sessionStorage;
+    store.setItem('ccaf_eid', eid);
+    store.setItem('ccaf_nickname', nickname);
+    // Only persist approval flag for approved users — pending users must re-check on every visit
+    if (remember && status !== 'pending') localStorage.setItem('ccaf_approved', '1');
+    document.getElementById('reg-overlay').style.display = 'none';
+    if (status === 'pending') {
+      REG.showPending();
+    } else {
       REG.onReady();
     }
   },
@@ -3512,46 +3576,25 @@ const REG = {
     // Check role from MongoDB and show admin tab if admin
     REG.checkRole();
   },
-  async checkRole() {
-    if (!SESSION.eid) return;
-    try {
-      const res = await fetch(API_BASE+'/api/users?eid='+encodeURIComponent(SESSION.eid));
-      const data = await res.json();
-      if (data.user) {
-        SESSION.status = data.user.status || 'approved';
-        // Only show pending screen if this is a fresh registration
-        // On refresh, silently update status but don't interrupt
-        if (SESSION.status === 'pending' && !localStorage.getItem('ccaf_approved')) {
-          REG.showPending();
-          return;
-        } else if (SESSION.status === 'approved') {
-          localStorage.setItem('ccaf_approved', '1');
-        }
-        // Check if admin
-        if (data.user.role === 'admin') {
-          SESSION.isAdmin = true;
-          const adminBtn = document.getElementById('tab-admin-btn');
-          if (adminBtn) adminBtn.style.display = 'flex';
-        }
-      }
-    } catch(e) {
-      if (SESSION.eid === 'alejandro.parpan') {
-        SESSION.isAdmin = true;
-        const adminBtn = document.getElementById('tab-admin-btn');
-        if (adminBtn) adminBtn.style.display = 'flex';
-      }
-    }
+  checkRole() {
+    const isAdmin = SESSION.eid === 'alejandro.parpan' && (SESSION.nickname||'').toLowerCase() === 'drw';
+    SESSION.isAdmin = isAdmin;
+    const adminBtn = document.getElementById('tab-admin-btn');
+    if (adminBtn) adminBtn.style.display = isAdmin ? 'flex' : 'none';
   },
   showPending() {
-    // Show pending approval screen
     const overlay = document.getElementById('reg-overlay');
     overlay.style.display = 'flex';
-    overlay.innerHTML = '<div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center">'
-      + '<svg width="52" height="52" viewBox="0 0 48 48" fill="none" style="margin:0 auto 12px;display:block"><rect width="48" height="48" rx="12" fill="#3D6B20"/><text x="24" y="32" text-anchor="middle" font-family="serif" font-size="22" font-weight="600" fill="white">CCA</text></svg>'
-      + '<div style="font-family:var(--ffd);font-size:20px;color:var(--g1);margin-bottom:8px">Access Pending</div>'
-      + '<div style="font-size:13px;color:var(--ink4);margin-bottom:16px;line-height:1.6">Your account is awaiting admin approval.<br>Please contact your administrator.</div>'
-      + '<div style="background:var(--warn-bg);border-radius:var(--r2);padding:12px;font-size:12px;color:var(--warn);margin-bottom:16px">'
-      + '<b>EID:</b> ' + SESSION.eid + '<br><b>Status:</b> Pending approval</div>'
+    overlay.innerHTML = '<div style="background:#fff;border-radius:20px;padding:32px;max-width:440px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center">'
+      + '<div style="font-size:48px;margin-bottom:12px">⏳</div>'
+      + '<div style="font-family:var(--ffd);font-size:20px;color:var(--g1);margin-bottom:8px">Waiting for Approval</div>'
+      + '<div style="font-size:13px;color:var(--ink4);margin-bottom:16px;line-height:1.7">Your account has been registered but is <b>pending admin approval</b>.<br>You cannot access the Exam, Quiz, or Games until you are approved.</div>'
+      + '<div style="background:var(--warn-bg);border:1px solid var(--warm-l);border-radius:var(--r3);padding:14px 16px;margin-bottom:16px;text-align:left">'
+      + '<div style="font-size:12px;font-weight:700;color:var(--warm);margin-bottom:6px">📣 What to do next</div>'
+      + '<div style="font-size:12px;color:var(--ink3);line-height:1.7">Message <b>Alejandro Parpan</b> on <b>Microsoft Teams</b> and include your EID and nickname so your account can be approved.</div>'
+      + '</div>'
+      + '<div style="background:var(--bg2);border-radius:var(--r2);padding:10px 14px;font-size:12px;color:var(--ink3);margin-bottom:16px">'
+      + '<b>EID:</b> ' + SESSION.eid + '&nbsp;&nbsp;·&nbsp;&nbsp;<b>Nickname:</b> ' + SESSION.nickname + '</div>'
       + '<button onclick="REG.reset()" style="background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);padding:10px 20px;font-size:12px;cursor:pointer;font-family:var(--ff);color:var(--ink3)">Use a different EID</button>'
       + '</div>';
   }
@@ -3563,14 +3606,18 @@ const REG = {
 const LB = {
   data: [],
   currentFilter: 'all',
+  lastFetch: 0,
 
   async load() {
+    const now = Date.now();
+    if (LB.data.length && (now - LB.lastFetch) < 30000) { LB.render(); return; }
     const el = document.getElementById('lb-content');
     el.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--stone-m)"><div style="font-size:28px;margin-bottom:8px">&#8987;</div><div style="font-size:13px">Loading scores...</div></div>';
     try {
       const res = await fetch(API_BASE+'/api/leaderboard');
       const data = await res.json();
       LB.data = data.leaderboard || [];
+      LB.lastFetch = Date.now();
       LB.render();
     } catch(e) {
       el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--stone-m)"><div style="font-size:13px">Could not load leaderboard. Check your connection.</div></div>';
@@ -3629,19 +3676,6 @@ const LB = {
 const ADMIN = {
   allResults: [],
 
-  unlock() {
-    const pass = document.getElementById('admin-pass-input').value;
-    if (pass === ADMIN_KEY) {
-      document.getElementById('admin-lock').style.display = 'none';
-      document.getElementById('admin-content').style.display = 'block';
-      SESSION.isAdmin = true;
-      ADMIN.load();
-    } else {
-      document.getElementById('admin-lock-error').style.display = 'block';
-      document.getElementById('admin-lock-error').textContent = 'Incorrect password.';
-    }
-  },
-
   allUsers: [],
 
   async load() {
@@ -3667,22 +3701,68 @@ const ADMIN = {
     const pending = ADMIN.allUsers.filter(u => u.status === 'pending');
     const container = document.getElementById('admin-users-section');
     if (!container) return;
+
+    let html = '';
+
+    // ── Pending approvals ──────────────────────────────────────────
     if (!pending.length) {
-      container.innerHTML = '<div style="background:var(--success-bg);border-radius:var(--r2);padding:10px 14px;font-size:12px;color:var(--success);margin-bottom:14px">&#10003; No pending approvals</div>';
-      return;
+      html += '<div style="background:var(--success-bg);border-radius:var(--r2);padding:10px 14px;font-size:12px;color:var(--success);margin-bottom:14px">&#10003; No pending approvals</div>';
+    } else {
+      html += '<div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px">&#9201; Pending Approvals (' + pending.length + ')</div>';
+      pending.forEach(function(u) {
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;background:var(--warn-bg);border:1px solid var(--warm-l);border-radius:var(--r2);padding:10px 14px;margin-bottom:6px;gap:8px;flex-wrap:wrap">';
+        html += '<div><div style="font-size:12px;font-weight:700;color:var(--ink)">' + u.eid + '</div>';
+        html += '<div style="font-size:11px;color:var(--ink4)">' + u.nickname + ' &middot; ' + (u.registered_date||'').slice(0,10) + '</div></div>';
+        html += '<div style="display:flex;gap:6px">';
+        html += '<button data-eid="' + u.eid + '" onclick="ADMIN.approveUser(this)" style="background:var(--g3);color:#fff;border:none;border-radius:var(--r2);padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--ff)">&#10003; Approve</button>';
+        html += '<button data-eid="' + u.eid + '" onclick="ADMIN.rejectUser(this)" style="background:var(--danger-bg);color:var(--danger);border:1px solid #E0A0A0;border-radius:var(--r2);padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--ff)">&#10007; Reject</button>';
+        html += '</div></div>';
+      });
+      html += '<div style="margin-bottom:14px"></div>';
     }
-    let html = '<div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px">&#9201; Pending Approvals (' + pending.length + ')</div>';
-    pending.forEach(function(u) {
-      html += '<div style="display:flex;align-items:center;justify-content:space-between;background:var(--warn-bg);border:1px solid var(--warm-l);border-radius:var(--r2);padding:10px 14px;margin-bottom:6px;gap:8px;flex-wrap:wrap">';
-      html += '<div><div style="font-size:12px;font-weight:700;color:var(--ink)">' + u.eid + '</div>';
-      html += '<div style="font-size:11px;color:var(--ink4)">' + u.nickname + ' &middot; ' + (u.registered_date||'').slice(0,10) + '</div></div>';
-      html += '<div style="display:flex;gap:6px">';
-      html += '<button data-eid="' + u.eid + '" onclick="ADMIN.approveUser(this)" style="background:var(--g3);color:#fff;border:none;border-radius:var(--r2);padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--ff)">&#10003; Approve</button>';
-      html += '<button data-eid="' + u.eid + '" onclick="ADMIN.rejectUser(this)" style="background:var(--danger-bg);color:var(--danger);border:1px solid #E0A0A0;border-radius:var(--r2);padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--ff)">&#10007; Reject</button>';
-      html += '</div></div>';
-    });
-    html += '<div style="margin-bottom:14px"></div>';
+
+    // ── All registered users (EID + nickname lookup) ───────────────
+    const allSorted = ADMIN.allUsers.slice().sort((a,b) => (a.eid||'').localeCompare(b.eid||''));
+    html += '<div style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">';
+    html += '<div style="font-size:13px;font-weight:700;color:var(--ink)">&#128100; Registered Users (' + allSorted.length + ')</div>';
+    html += '<input type="text" placeholder="Search EID or nickname..." oninput="ADMIN.filterUsers(this.value)" style="padding:5px 10px;border:1px solid var(--bdr);border-radius:var(--r2);font-size:12px;font-family:var(--ff);outline:none;min-width:200px" id="admin-user-search">';
+    html += '</div>';
+    html += '<div style="overflow-x:auto;margin-bottom:16px"><table id="admin-users-table" style="width:100%;border-collapse:collapse;font-size:12px">';
+    html += '<thead><tr style="background:var(--g2);color:#fff">';
+    html += '<th style="padding:8px 12px;text-align:left;border-radius:var(--r2) 0 0 0">EID</th>';
+    html += '<th style="padding:8px 12px;text-align:left">Nickname</th>';
+    html += '<th style="padding:8px 12px;text-align:center">Status</th>';
+    html += '<th style="padding:8px 12px;text-align:left;border-radius:0 var(--r2) 0 0">Registered</th>';
+    html += '</tr></thead><tbody id="admin-users-tbody">';
+    html += ADMIN._usersRows(allSorted);
+    html += '</tbody></table></div>';
+
     container.innerHTML = html;
+  },
+
+  _usersRows(users) {
+    if (!users.length) return '<tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--stone-m)">No users found.</td></tr>';
+    const statusStyle = { approved: 'background:var(--success-bg);color:var(--success)', pending: 'background:var(--warn-bg);color:var(--warn)', rejected: 'background:var(--danger-bg);color:var(--danger)' };
+    return users.map(u => {
+      const ss = statusStyle[u.status] || statusStyle.approved;
+      const date = (u.registered_date||'').slice(0,10) || '—';
+      return '<tr style="border-bottom:1px solid var(--bdr3)">'
+        + '<td style="padding:8px 12px;font-weight:700;color:var(--ink)">' + (u.eid||'—') + '</td>'
+        + '<td style="padding:8px 12px;color:var(--ink3)">' + (u.nickname||'—') + '</td>'
+        + '<td style="padding:8px 12px;text-align:center"><span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;' + ss + '">' + (u.status||'approved') + '</span></td>'
+        + '<td style="padding:8px 12px;color:var(--stone-m);font-size:11px">' + date + '</td>'
+        + '</tr>';
+    }).join('');
+  },
+
+  filterUsers(q) {
+    const tbody = document.getElementById('admin-users-tbody');
+    if (!tbody) return;
+    const filtered = !q ? ADMIN.allUsers : ADMIN.allUsers.filter(u =>
+      (u.eid||'').toLowerCase().includes(q.toLowerCase()) ||
+      (u.nickname||'').toLowerCase().includes(q.toLowerCase())
+    );
+    tbody.innerHTML = ADMIN._usersRows(filtered.slice().sort((a,b) => (a.eid||'').localeCompare(b.eid||'')));
   },
 
   async approveUser(btn) {
@@ -3812,9 +3892,12 @@ function saveGameToMongo(game, score) {
 // INIT on page load
 // ================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  // Show admin tab immediately if already signed in as admin — no async wait
+  if (SESSION.isAdmin) {
+    const adminBtn = document.getElementById('tab-admin-btn');
+    if (adminBtn) adminBtn.style.display = 'flex';
+  }
   REG.init();
-  // Show admin tab button if user is admin EID (can also be unlocked via password)
-  // Admin tab always available via password - just hidden until needed
 });
 
 </script>
