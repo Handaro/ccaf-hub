@@ -322,6 +322,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
       </label>
       <div id="reg-error" style="display:none;background:var(--danger-bg);border-radius:var(--r2);padding:8px 12px;font-size:12px;color:var(--danger)"></div>
       <button onclick="REG.submit()" style="background:var(--g3);color:#fff;border:none;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--ff);margin-top:4px">Get started &rarr;</button>
+      <button onclick="REG.continueAsGuest()" style="background:none;border:none;color:var(--ink4);font-size:12px;cursor:pointer;font-family:var(--ff);padding:4px;text-decoration:underline">Continue without logging in</button>
     </div>
     <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--stone-m)">Your exam results are private. Only game scores appear on the leaderboard.</div>
   </div>
@@ -366,8 +367,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--ink);padding:1rem;mi
 <!-- HOME TAB -->
 <div id="tab-home" class="panel on">
   <div class="hero">
-    <div class="hero-title">Welcome, Alejandro</div>
-    <div class="hero-sub">Your complete CCA-F preparation environment &middot; Accenture Edition &nbsp;<span onclick="REG.reset()" style="cursor:pointer;opacity:.7;font-size:11px;text-decoration:underline">Not you? Change identity</span></div>
+    <div class="hero-title">Welcome to CCA-F Study Hub</div>
+    <div class="hero-sub" id="hero-sub">Your complete CCA-F preparation environment &middot; Accenture Edition &nbsp;<span id="hero-identity-link" onclick="REG.reset()" style="cursor:pointer;opacity:.7;font-size:11px;text-decoration:underline;display:none">Not you? Change identity</span><span id="hero-signin-link" onclick="REG.showLogin()" style="cursor:pointer;opacity:.9;font-size:11px;text-decoration:underline">Sign in to access all features</span></div>
     <div class="hero-stats">
       <div class="hstat"><div class="hstat-n">5</div><div class="hstat-l">DOMAINS</div></div>
       <div class="hstat"><div class="hstat-n">6</div><div class="hstat-l">SCENARIOS</div></div>
@@ -2650,6 +2651,12 @@ const ADMIN_KEY = 'CcafAdmin2026';
 
 const SK='ccaf_v1';
 function sw(t,btn){
+  // Guest: any non-home tab triggers login
+  if(!SESSION.eid && t!=='home'){
+    REG._pendingTab=t; REG._pendingBtn=btn;
+    REG.showLogin();
+    return;
+  }
   // Admin tab: strictly only for alejandro.parpan/drw — silently ignore for everyone else
   if(t==='admin'&&!SESSION.isAdmin) return;
   // Restricted tabs: blocked for pending users
@@ -3462,9 +3469,11 @@ SESSION.isAdmin = SESSION.eid === 'alejandro.parpan' && (SESSION.nickname||'').t
 // REGISTRATION
 // ================================================================
 const REG = {
+  _pendingTab: null,
+  _pendingBtn: null,
   init() {
     if (!SESSION.eid || !SESSION.nickname) {
-      document.getElementById('reg-overlay').style.display = 'flex';
+      REG.onGuest();
     } else if (SESSION.eid === 'alejandro.parpan') {
       // Admin EID always gets full access — never show pending screen regardless of stored nickname
       SESSION.status = 'approved';
@@ -3472,6 +3481,27 @@ const REG = {
     } else {
       REG.checkStatusAndProceed();
     }
+  },
+  continueAsGuest() {
+    document.getElementById('reg-overlay').style.display = 'none';
+    REG._pendingTab = null; REG._pendingBtn = null;
+  },
+  onGuest() {
+    const heroTitle = document.querySelector('.hero-title');
+    if (heroTitle) heroTitle.textContent = 'Welcome to CCA-F Study Hub';
+    const identityLink = document.getElementById('hero-identity-link');
+    const signinLink = document.getElementById('hero-signin-link');
+    if (identityLink) identityLink.style.display = 'none';
+    if (signinLink) signinLink.style.display = 'inline';
+  },
+  showLogin() {
+    // Restore original overlay content in case showPending() replaced it
+    const overlay = document.getElementById('reg-overlay');
+    if (!overlay.querySelector('#reg-eid')) {
+      location.reload();
+      return;
+    }
+    overlay.style.display = 'flex';
   },
   async checkStatusAndProceed() {
     try {
@@ -3570,11 +3600,19 @@ const REG = {
     location.reload();
   },
   onReady() {
-    // Update welcome message on home tab
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle && SESSION.nickname) heroTitle.textContent = 'Welcome, ' + SESSION.nickname;
-    // Check role from MongoDB and show admin tab if admin
+    const identityLink = document.getElementById('hero-identity-link');
+    const signinLink = document.getElementById('hero-signin-link');
+    if (identityLink) identityLink.style.display = 'inline';
+    if (signinLink) signinLink.style.display = 'none';
     REG.checkRole();
+    // Navigate to tab that triggered login, if any
+    if (REG._pendingTab && REG._pendingBtn) {
+      const t = REG._pendingTab, b = REG._pendingBtn;
+      REG._pendingTab = null; REG._pendingBtn = null;
+      sw(t, b);
+    }
   },
   checkRole() {
     const isAdmin = SESSION.eid === 'alejandro.parpan' && (SESSION.nickname||'').toLowerCase() === 'drw';
